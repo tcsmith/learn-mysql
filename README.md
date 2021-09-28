@@ -8,7 +8,7 @@ Create as network for the server to use. See: https://github.com/docker-library/
 
 Run the server 
 
-    $ docker run --network mysql-net -e MYSQL_ROOT_PASSWORD=learn --name learn-mysql-server --rm -d mysql:5.7
+    $ docker run --network mysql-net -p 3306:3306 -p 33060:33060  -e MYSQL_ROOT_PASSWORD=learn --name learn-mysql-server --rm -d mysql:5.7
 
 Connect a commandline mysql client 
 
