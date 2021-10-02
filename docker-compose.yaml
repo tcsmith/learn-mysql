@@ -1,8 +1,22 @@
 version: "3"
 
 services:
-  db:
+  mysql:
     image: mysql:5.7
-    
-network:
-  learn-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 'learn'
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    volumes:
+      - learn-mysql:/var/lib/mysql
+    networks:
+      - learn-mysql
+
+
+volumes:
+  learn-mysql:
+
+networks:
+  learn-mysql:
+  
