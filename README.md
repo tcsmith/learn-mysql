@@ -1,52 +1,45 @@
-# python project to hack and learn about MySQL
+# Learn-MySQL
+
+A project to get learned on MySQL, now using MariaDB, Flyway for the migrations, and Python to access the DB programmitcally
 
 ## Docker
 
-### Running the MySQL server and client with Docker
+Using docker compose to run a MariaDB server.
+Initial data data is done via flyway as are subsequent migration
 
-Create a network for the server to use. See: https://github.com/docker-library/mysql/issues/644#issuecomment-664107416 
-
-    $ docker network create mysql-net
-
-Optionally if you want persistence, create a volume 
-
-    $ docker volume create learn-mysql
-
-Run the server and expose the ports 
-
-    $ docker run --network mysql-net -p 3306:3306 -p 33060:33060  -e MYSQL_ROOT_PASSWORD=learn --name learn-mysql-server --rm -d mysql:5.7
-
-    If you want persistence be sure to mount the volume by adding the following option when starting the server
-
-        -v learn-mysql:/var/lib/mysql
-
-Connect a commandline mysql client 
-
-    $ docker run --network mysql-net -it --rm --name learn-mysql-client mysql:5.7 mysql -hlearn-mysql-server -uroot -p
-
-### Importing the sample data
-
-Copy the example data 
-
-    $ docker cp sql/mysqlsampledatabase.sql learn-mysql-client:/tmp
-
-In the mysql client 
-
-    $ source /tmp/mysqlsampledatabase.sql
+The docker compose file creates a volume for database persistence.
+It can optionally be deleted when stopping the DB.
 
 
-### Docker compose 
+### Initial Run
 
-The docker compose file creates a volume for database persistence
+Start the database server
 
-Start the server
+    $ docker-compose up learn-mysql -d
 
-    $ docker-compose up -d
+Start the database client 
 
-Start the client 
+    $ docker run --network learn-mysql_learn-mysql -it --rm --name learn-mysql-client mariadb:10.3 mysql -hlearn-mysql_learn-mysql_1 -uroot -plearn
 
-    $ docker run --network learn-mysql_learn-mysql -it --rm --name learn-mysql-client mysql:5.7 mysql -hlearn-mysql_mysql_1 -uroot -p
+Create the classicmodels database 
 
+    MariaDB [(none)]> CREATE DATABASE classicmodels;
+
+Run flyway to create and fill the tables 
+
+    $ docker-compose up learn-mysql-flyway
+    
+
+### Subsequent Runs
+
+Stopping the server 
+
+    $ docker-compose down
+
+This stops the server but keeps the persistent storage volume.
+To remove the volume and start fresh do: 
+
+    $ docker-compose down --volumes
 
 
 ## Sample database and learning

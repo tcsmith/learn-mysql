@@ -1,10 +1,10 @@
 version: "3"
 
 services:
-  mysql:
-    image: mysql:5.7
+  learn-mysql:
+    image: mariadb/server:10.3
     environment:
-      MYSQL_ROOT_PASSWORD: 'learn'
+      MARIADB_ROOT_PASSWORD: 'learn'
     ports:
       - "3306:3306"
       - "33060:33060"
@@ -13,10 +13,22 @@ services:
     networks:
       - learn-mysql
 
+  learn-mysql-flyway:
+    build:
+      context: flyway
+    image: learn-mysql-flyway:latest
+    command: migrate
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: none
+    depends_on:
+      - learn-mysql
+    networks:
+      - learn-mysql
 
 volumes:
   learn-mysql:
 
 networks:
   learn-mysql:
-  
