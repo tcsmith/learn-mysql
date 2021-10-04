@@ -1,6 +1,6 @@
 # Learn-MySQL
 
-A project to get learned on MySQL, now using MariaDB, Flyway for the migrations, and Python to access the DB programmitcally
+A project to get learned on MySQL, now using MariaDB, Flyway for the migrations, Python to access the DB programmitcally, and unittest framework.
 
 ## Docker
 
@@ -40,6 +40,12 @@ This stops the server but keeps the persistent storage volume.
 To remove the volume and start fresh do: 
 
     $ docker-compose down --volumes
+
+### Testing
+
+You can hack around in main.py or add the code to a unit test framework:
+
+    $  python tests/tests.py
 
 
 ## Sample database and learning
